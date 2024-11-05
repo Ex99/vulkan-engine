@@ -2,6 +2,7 @@
 #define _APPLICATION_H
 
 #include "window.h"
+#include "graphics_pipeline.h"
 
 namespace GeckoEngine
 {
@@ -15,6 +16,7 @@ namespace GeckoEngine
 
     private:
         Window window{WIDTH, HEIGHT, "Hello Vulkan!"};
+        GraphicsPipeline graphicsPipeline{"shaders/simple.vert.spv", "shaders/simple.frag.spv"};
     };
 }
 

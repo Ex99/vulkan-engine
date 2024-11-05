@@ -14,12 +14,14 @@ project(VulkanTest)
 set(SOURCES
     src/main.cpp
     src/application.cpp
+    src/graphics_pipeline.cpp
     src/window.cpp
 )
 
 # Add header files (optional, for IDE support)
 set(HEADERS
     src/application.h
+    src/graphics_pipeline.h
     src/window.h
 )
 

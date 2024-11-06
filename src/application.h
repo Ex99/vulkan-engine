@@ -1,8 +1,9 @@
 #ifndef _APPLICATION_H
 #define _APPLICATION_H
 
-#include "window.h"
+#include "device.h"
 #include "graphics_pipeline.h"
+#include "window.h"
 
 namespace GeckoEngine
 {
@@ -16,8 +17,13 @@ namespace GeckoEngine
 
     private:
         Window window{WIDTH, HEIGHT, "Hello Vulkan!"};
-        GraphicsPipeline graphicsPipeline{"shaders/simple.vert.spv", "shaders/simple.frag.spv"};
+        Device device{window};
+        GraphicsPipeline graphicsPipeline{
+            device,
+            "shaders/simple.vert.spv",
+            "shaders/simple.frag.spv",
+            GraphicsPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
     };
-}
+} // namespace GeckoEngine
 
 #endif // _APPLICATION_H

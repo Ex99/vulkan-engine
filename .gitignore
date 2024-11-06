@@ -56,3 +56,6 @@ _deps
 
 # Vulkan SPIR-V
 *.spv
+
+# Build directory
+build/

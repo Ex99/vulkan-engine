@@ -4,16 +4,17 @@ cmake_minimum_required(VERSION 3.22)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Set compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-
 # Specify the project name
-project(VulkanTest)
+project(GeckoEngine)
+
+# Set the output directory for the executable
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 
 # Add source files
 set(SOURCES
     src/main.cpp
     src/application.cpp
+    src/device.cpp
     src/graphics_pipeline.cpp
     src/window.cpp
 )
@@ -21,15 +22,22 @@ set(SOURCES
 # Add header files (optional, for IDE support)
 set(HEADERS
     src/application.h
+    src/device.h
     src/graphics_pipeline.h
     src/window.h
 )
 
+# Set compiler flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+
 # Create the executable
-add_executable(VulkanTest ${SOURCES} ${HEADERS})
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+# Set the C++ standard explicitly
+target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -std=c++17)
 
 # Link required libraries
-target_link_libraries(VulkanTest
+target_link_libraries(${CMAKE_PROJECT_NAME}
     glfw
     vulkan
     dl
@@ -41,4 +49,4 @@ target_link_libraries(VulkanTest
 )
 
 # Ensure that the compiler can find headers in the src directory
-target_include_directories(VulkanTest PRIVATE src)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE src)

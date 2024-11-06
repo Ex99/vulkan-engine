@@ -19,6 +19,8 @@ namespace GeckoEngine
 
         bool shouldClose() { return glfwWindowShouldClose(window); }
 
+        void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
+
     private:
         void init();
 
@@ -28,6 +30,6 @@ namespace GeckoEngine
         std::string title;
         GLFWwindow *window;
     };
-}
+} // namespace GeckoEngine
 
 #endif // _WINDOW_H

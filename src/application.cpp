@@ -9,4 +9,4 @@ namespace GeckoEngine
             glfwPollEvents();
         }
     }
-}
+} // namespace GeckoEngine

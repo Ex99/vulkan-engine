@@ -1,5 +1,7 @@
 #include "window.h"
 
+#include <stdexcept>
+
 namespace GeckoEngine
 {
     Window::Window(int w, int h, std::string title) : width{w}, height{h}, title{title}
@@ -13,6 +15,14 @@ namespace GeckoEngine
         glfwTerminate();
     }
 
+    void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface)
+    {
+        if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to create window surface.");
+        }
+    }
+
     void Window::init()
     {
         glfwInit();
@@ -21,4 +31,4 @@ namespace GeckoEngine
 
         window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
     }
-}
+} // namespace GeckoEngine

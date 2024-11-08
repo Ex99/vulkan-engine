@@ -14,8 +14,8 @@ namespace GeckoEngine
     class Application
     {
     public:
-        static constexpr int WIDTH = 800;
-        static constexpr int HEIGHT = 800;
+        static constexpr int WIDTH = 1280;
+        static constexpr int HEIGHT = 720;
 
         Application();
         ~Application();
@@ -31,7 +31,7 @@ namespace GeckoEngine
         void createCommandBuffers();
         void drawFrame();
 
-        Window window{WIDTH, HEIGHT, "Hello Vulkan!"};
+        Window window{WIDTH, HEIGHT, "Gecko Engine"};
         Device device{window};
         SwapChain swapChain{device, window.getExtent()};
         std::unique_ptr<GraphicsPipeline> graphicsPipeline;

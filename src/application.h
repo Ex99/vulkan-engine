@@ -3,7 +3,11 @@
 
 #include "device.h"
 #include "graphics_pipeline.h"
+#include "swap_chain.h"
 #include "window.h"
+
+#include <memory>
+#include <vector>
 
 namespace GeckoEngine
 {
@@ -13,16 +17,26 @@ namespace GeckoEngine
         static constexpr int WIDTH = 800;
         static constexpr int HEIGHT = 800;
 
+        Application();
+        ~Application();
+
+        Application(const Application &) = delete;
+        Application &operator=(const Application &) = delete;
+
         void run();
 
     private:
+        void createPipelineLayout();
+        void createPipeline();
+        void createCommandBuffers();
+        void drawFrame();
+
         Window window{WIDTH, HEIGHT, "Hello Vulkan!"};
         Device device{window};
-        GraphicsPipeline graphicsPipeline{
-            device,
-            "shaders/simple.vert.spv",
-            "shaders/simple.frag.spv",
-            GraphicsPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+        SwapChain swapChain{device, window.getExtent()};
+        std::unique_ptr<GraphicsPipeline> graphicsPipeline;
+        VkPipelineLayout pipelineLayout;
+        std::vector<VkCommandBuffer> commandBuffers;
     };
 } // namespace GeckoEngine
 

@@ -13,7 +13,7 @@ namespace GeckoEngine
         const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
         void *pUserData)
     {
-        std::cerr << "Validation layer: " << pCallbackData->pMessage << std::endl;
+        std::cerr << "[Validation layer] " << pCallbackData->pMessage << std::endl;
 
         return VK_FALSE;
     }
@@ -130,24 +130,41 @@ namespace GeckoEngine
             throw std::runtime_error("Failed to find GPUs with Vulkan support.");
         }
         std::cout << "Device count: " << deviceCount << std::endl;
+
         std::vector<VkPhysicalDevice> devices(deviceCount);
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
+        // Look for a discrete GPU
         for (const auto &device : devices)
         {
-            if (isDeviceSuitable(device))
+            vkGetPhysicalDeviceProperties(device, &properties);
+            if (isDeviceSuitable(device) && properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
             {
                 physicalDevice = device;
                 break;
             }
         }
 
+        // Not found? Try with any GPU
+        if (physicalDevice == VK_NULL_HANDLE)
+        {
+            for (const auto &device : devices)
+            {
+                if (isDeviceSuitable(device))
+                {
+                    vkGetPhysicalDeviceProperties(device, &properties);
+                    physicalDevice = device;
+                    break;
+                }
+            }
+        }
+
+        // No GPU to work with
         if (physicalDevice == VK_NULL_HANDLE)
         {
             throw std::runtime_error("Failed to find a suitable GPU.");
         }
 
-        vkGetPhysicalDeviceProperties(physicalDevice, &properties);
         std::cout << "Physical device: " << properties.deviceName << std::endl;
     }
 

@@ -10,6 +10,17 @@ namespace GeckoEngine
 {
     struct PipelineConfigInfo
     {
+        VkViewport viewport;
+        VkRect2D scissor;
+        VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
+        VkPipelineRasterizationStateCreateInfo rasterizationInfo;
+        VkPipelineMultisampleStateCreateInfo multisampleInfo;
+        VkPipelineColorBlendAttachmentState colorBlendAttachment;
+        VkPipelineColorBlendStateCreateInfo colorBlendInfo;
+        VkPipelineDepthStencilStateCreateInfo depthStencilInfo;
+        VkPipelineLayout pipelineLayout = nullptr;
+        VkRenderPass renderPass = nullptr;
+        uint32_t subpass = 0;
     };
 
     class GraphicsPipeline
@@ -20,7 +31,7 @@ namespace GeckoEngine
             const std::string &vertShaderPath,
             const std::string &fragShaderPath,
             const PipelineConfigInfo &configInfo);
-        ~GraphicsPipeline() {}
+        ~GraphicsPipeline();
 
         GraphicsPipeline(const GraphicsPipeline &) = delete;
         void operator=(const GraphicsPipeline &) = delete;

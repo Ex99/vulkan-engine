@@ -17,6 +17,7 @@ set(SOURCES
     src/device.cpp
     src/graphics_pipeline.cpp
     src/model.cpp
+    src/object.cpp
     src/swap_chain.cpp
     src/window.cpp
 )
@@ -27,6 +28,7 @@ set(HEADERS
     src/device.h
     src/graphics_pipeline.h
     src/model.h
+    src/object.h
     src/swap_chain.h
     src/window.h
 )

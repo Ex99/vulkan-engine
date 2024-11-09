@@ -34,7 +34,7 @@ namespace GeckoEngine
         ~GraphicsPipeline();
 
         GraphicsPipeline(const GraphicsPipeline &) = delete;
-        void operator=(const GraphicsPipeline &) = delete;
+        GraphicsPipeline &operator=(const GraphicsPipeline &) = delete;
 
         void bind(VkCommandBuffer commandBuffer);
 

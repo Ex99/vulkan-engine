@@ -3,6 +3,7 @@
 
 #include "device.h"
 #include "graphics_pipeline.h"
+#include "model.h"
 #include "swap_chain.h"
 #include "window.h"
 
@@ -26,6 +27,7 @@ namespace GeckoEngine
         void run();
 
     private:
+        void loadModels();
         void createPipelineLayout();
         void createPipeline();
         void createCommandBuffers();
@@ -37,6 +39,7 @@ namespace GeckoEngine
         std::unique_ptr<GraphicsPipeline> graphicsPipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
+        std::unique_ptr<Model> model;
     };
 } // namespace GeckoEngine
 

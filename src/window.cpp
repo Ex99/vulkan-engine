@@ -23,12 +23,22 @@ namespace GeckoEngine
         }
     }
 
+    void Window::framebufferResizeCallback(GLFWwindow *window, int width, int height)
+    {
+        auto target = reinterpret_cast<Window *>(glfwGetWindowUserPointer(window));
+        target->isResized = true;
+        target->width = width;
+        target->height = height;
+    }
+
     void Window::init()
     {
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+        glfwSetWindowUserPointer(window, this);
+        glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
     }
 } // namespace GeckoEngine

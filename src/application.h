@@ -31,11 +31,14 @@ namespace GeckoEngine
         void createPipelineLayout();
         void createPipeline();
         void createCommandBuffers();
+        void freeCommandBuffers();
         void drawFrame();
+        void recreateSwapChain();
+        void recordCommandBuffer(int imageIndex);
 
         Window window{WIDTH, HEIGHT, "Gecko Engine"};
         Device device{window};
-        SwapChain swapChain{device, window.getExtent()};
+        std::unique_ptr<SwapChain> swapChain;
         std::unique_ptr<GraphicsPipeline> graphicsPipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;

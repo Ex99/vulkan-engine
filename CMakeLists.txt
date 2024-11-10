@@ -18,6 +18,7 @@ set(SOURCES
     src/graphics_pipeline.cpp
     src/model.cpp
     src/object.cpp
+    src/renderer.cpp
     src/swap_chain.cpp
     src/window.cpp
 )
@@ -29,6 +30,7 @@ set(HEADERS
     src/graphics_pipeline.h
     src/model.h
     src/object.h
+    src/renderer.h
     src/swap_chain.h
     src/window.h
 )

@@ -4,7 +4,7 @@
 #include "device.h"
 #include "graphics_pipeline.h"
 #include "object.h"
-#include "swap_chain.h"
+#include "renderer.h"
 #include "window.h"
 
 #include <memory>
@@ -30,19 +30,14 @@ namespace GeckoEngine
         void loadObjects();
         void createPipelineLayout();
         void createPipeline();
-        void createCommandBuffers();
-        void freeCommandBuffers();
-        void drawFrame();
-        void recreateSwapChain();
-        void recordCommandBuffer(int imageIndex);
         void renderObjects(VkCommandBuffer commandBuffer);
 
         Window window{WIDTH, HEIGHT, "Gecko Engine"};
         Device device{window};
-        std::unique_ptr<SwapChain> swapChain;
+        Renderer renderer{window, device};
+
         std::unique_ptr<GraphicsPipeline> graphicsPipeline;
         VkPipelineLayout pipelineLayout;
-        std::vector<VkCommandBuffer> commandBuffers;
         std::vector<Object> objects;
     };
 } // namespace GeckoEngine

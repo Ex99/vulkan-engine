@@ -14,8 +14,8 @@ namespace GeckoEngine
     class Application
     {
     public:
-        static constexpr int WIDTH = 1280;
-        static constexpr int HEIGHT = 720;
+        static constexpr int WIDTH = 600;
+        static constexpr int HEIGHT = 600;
 
         Application();
         ~Application();

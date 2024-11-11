@@ -68,6 +68,7 @@ namespace GeckoEngine
         }
 
         isFrameStarted = false;
+        currentFrameIndex = (currentFrameIndex + 1) % SwapChain::MAX_FRAMES_IN_FLIGHT;
     }
 
     void Renderer::beginSwapChainRenderPass(VkCommandBuffer commandBuffer)
@@ -117,7 +118,7 @@ namespace GeckoEngine
 
     void Renderer::createCommandBuffers()
     {
-        commandBuffers.resize(swapChain->imageCount());
+        commandBuffers.resize(SwapChain::MAX_FRAMES_IN_FLIGHT);
 
         VkCommandBufferAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -158,11 +159,12 @@ namespace GeckoEngine
         }
         else
         {
+            std::shared_ptr<SwapChain> oldSwapChain = std::move(swapChain);
             swapChain = std::make_unique<SwapChain>(device, extend, std::move(swapChain));
-            if (swapChain->imageCount() != commandBuffers.size())
+
+            if (!oldSwapChain->compareSwapFormats(*swapChain.get()))
             {
-                freeCommandBuffers();
-                createCommandBuffers();
+                throw std::runtime_error("Swap chain image (or depth format) has changed.");
             }
         }
 

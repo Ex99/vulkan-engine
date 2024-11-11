@@ -2,7 +2,6 @@
 #define _APPLICATION_H
 
 #include "device.h"
-#include "graphics_pipeline.h"
 #include "object.h"
 #include "renderer.h"
 #include "window.h"
@@ -28,16 +27,11 @@ namespace GeckoEngine
 
     private:
         void loadObjects();
-        void createPipelineLayout();
-        void createPipeline();
-        void renderObjects(VkCommandBuffer commandBuffer);
 
         Window window{WIDTH, HEIGHT, "Gecko Engine"};
         Device device{window};
         Renderer renderer{window, device};
 
-        std::unique_ptr<GraphicsPipeline> graphicsPipeline;
-        VkPipelineLayout pipelineLayout;
         std::vector<Object> objects;
     };
 } // namespace GeckoEngine

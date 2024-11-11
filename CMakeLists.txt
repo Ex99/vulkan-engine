@@ -19,6 +19,7 @@ set(SOURCES
     src/model.cpp
     src/object.cpp
     src/renderer.cpp
+    src/rendering_server.cpp
     src/swap_chain.cpp
     src/window.cpp
 )
@@ -31,6 +32,7 @@ set(HEADERS
     src/model.h
     src/object.h
     src/renderer.h
+    src/rendering_server.h
     src/swap_chain.h
     src/window.h
 )

@@ -75,6 +75,8 @@ namespace GeckoEngine
 
     void RenderingServer::createPipeline(VkRenderPass renderPass)
     {
+        assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout.");
+
         PipelineConfigInfo pipelineConfig{};
         GraphicsPipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;

@@ -43,7 +43,6 @@ namespace GeckoEngine
     private:
         void createCommandBuffers();
         void freeCommandBuffers();
-        void drawFrame();
         void recreateSwapChain();
 
         Window &window;

@@ -43,7 +43,8 @@ namespace GeckoEngine
 
         bool compareSwapFormats(const SwapChain &swapChain) const
         {
-            return swapChain.swapChainDepthFormat == swapChainDepthFormat && swapChain.swapChainImageFormat == swapChainImageFormat;
+            return swapChain.swapChainDepthFormat == swapChainDepthFormat &&
+                   swapChain.swapChainImageFormat == swapChainImageFormat;
         }
 
     private:

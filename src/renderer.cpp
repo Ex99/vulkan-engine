@@ -160,7 +160,7 @@ namespace GeckoEngine
         else
         {
             std::shared_ptr<SwapChain> oldSwapChain = std::move(swapChain);
-            swapChain = std::make_unique<SwapChain>(device, extend, std::move(swapChain));
+            swapChain = std::make_unique<SwapChain>(device, extend, oldSwapChain);
 
             if (!oldSwapChain->compareSwapFormats(*swapChain.get()))
             {

@@ -1,5 +1,6 @@
 #include "application.h"
 
+#include "camera.h"
 #include "rendering_server.h"
 
 #define GLM_FORCE_RADIANS
@@ -19,15 +20,20 @@ namespace GeckoEngine
     void Application::run()
     {
         RenderingServer renderingServer{device, renderer.getSwapChainRenderPass()};
+        Camera3D camera{};
 
         while (!window.shouldClose())
         {
             glfwPollEvents();
 
+            float aspectRatio = renderer.getAspectRatio();
+            // camera.setOrthographicProjection(-aspectRatio, aspectRatio, -1, 1, -1, 1);
+            camera.setPerspectiveProjection(glm::radians(50.0f), aspectRatio, 0.1f, 10.0f);
+
             if (auto commandBuffer = renderer.beginFrame())
             {
                 renderer.beginSwapChainRenderPass(commandBuffer);
-                renderingServer.renderObjects(commandBuffer, objects);
+                renderingServer.renderObjects(commandBuffer, objects, camera);
                 renderer.endSwapChainRenderPass(commandBuffer);
                 renderer.endFrame();
             }
@@ -102,7 +108,7 @@ namespace GeckoEngine
 
         auto cube = Object::createObject();
         cube.model = model;
-        cube.transform.position = {0.0f, 0.0f, 0.5f};
+        cube.transform.position = {0.0f, 0.0f, 1.5f};
         cube.transform.scale = {0.5f, 0.5f, 0.5f};
 
         objects.push_back(std::move(cube));

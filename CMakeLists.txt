@@ -14,6 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
 set(SOURCES
     src/main.cpp
     src/application.cpp
+    src/camera.cpp
     src/device.cpp
     src/graphics_pipeline.cpp
     src/model.cpp
@@ -27,6 +28,7 @@ set(SOURCES
 # Add header files (optional, for IDE support)
 set(HEADERS
     src/application.h
+    src/camera.h
     src/device.h
     src/graphics_pipeline.h
     src/model.h

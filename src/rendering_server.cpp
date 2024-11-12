@@ -26,7 +26,7 @@ namespace GeckoEngine
         vkDestroyPipelineLayout(device.device(), pipelineLayout, nullptr);
     }
 
-    void RenderingServer::renderObjects(VkCommandBuffer commandBuffer, std::vector<Object> &objects)
+    void RenderingServer::renderObjects(VkCommandBuffer commandBuffer, std::vector<Object> &objects, const Camera3D &camera)
     {
         graphicsPipeline->bind(commandBuffer);
 
@@ -37,7 +37,7 @@ namespace GeckoEngine
 
             SimplePushConstantData push{};
             push.color = obj.color;
-            push.transform = obj.transform.mat4();
+            push.transform = camera.getProjection() * obj.transform.mat4();
 
             vkCmdPushConstants(
                 commandBuffer,

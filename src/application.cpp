@@ -1,10 +1,13 @@
 #include "application.h"
 
 #include "camera.h"
+#include "input.h"
 #include "rendering_server.h"
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/constants.hpp>
+
+#include <chrono>
 
 namespace GeckoEngine
 {
@@ -22,15 +25,24 @@ namespace GeckoEngine
         RenderingServer renderingServer{device, renderer.getSwapChainRenderPass()};
 
         Camera3D camera{};
-        // camera.setViewDirection(glm::vec3(0.0f), glm::vec3(0.5f, 0.0f, 1.0f));
-        camera.setViewTarget(glm::vec3(-1.0f, -2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 1.5f));
+
+        auto viewerObject = Object::createObject();
+        KeyboardController cameraController{};
+
+        auto currentTime = std::chrono::high_resolution_clock::now();
 
         while (!window.shouldClose())
         {
             glfwPollEvents();
 
+            auto newTime = std::chrono::high_resolution_clock::now();
+            float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+            currentTime = newTime;
+
+            cameraController.moveInPlaneXZ(window.getGLFWwindow(), frameTime, viewerObject);
+            camera.setViewXYZ(viewerObject.transform.position, viewerObject.transform.rotation);
+
             float aspectRatio = renderer.getAspectRatio();
-            // camera.setOrthographicProjection(-aspectRatio, aspectRatio, -1, 1, -1, 1);
             camera.setPerspectiveProjection(glm::radians(50.0f), aspectRatio, 0.1f, 10.0f);
 
             if (auto commandBuffer = renderer.beginFrame())

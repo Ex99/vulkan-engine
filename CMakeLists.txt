@@ -17,6 +17,7 @@ set(SOURCES
     src/camera.cpp
     src/device.cpp
     src/graphics_pipeline.cpp
+    src/input.cpp
     src/model.cpp
     src/object.cpp
     src/renderer.cpp
@@ -31,6 +32,7 @@ set(HEADERS
     src/camera.h
     src/device.h
     src/graphics_pipeline.h
+    src/input.h
     src/model.h
     src/object.h
     src/renderer.h

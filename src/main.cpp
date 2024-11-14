@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
-int main()
+int main(int argc, const char *argv[])
 {
     GeckoEngine::Application app{};
 

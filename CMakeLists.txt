@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Specify the project name
 project(GeckoEngine)
 
-# Set the output directory for the executable
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
-
 # Add source files
 set(SOURCES
     src/main.cpp
@@ -41,26 +38,39 @@ set(HEADERS
     src/window.h
 )
 
-# Set compiler flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
-
 # Create the executable
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-# Set the C++ standard explicitly
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -std=c++17)
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 
 # Link required libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     glfw
     vulkan
-    dl
-    pthread
-    X11
-    Xxf86vm
-    Xrandr
-    Xi
 )
 
-# Ensure that the compiler can find headers in the src directory
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE src)
+# Find glslangValidator
+find_program(GLSLANG_VALIDATOR glslangValidator)
+
+if(GLSLANG_VALIDATOR)
+    # Compile shaders
+    set(SHADER_DIR "${CMAKE_SOURCE_DIR}/shaders")
+    set(SPIRV_DIR "${CMAKE_BINARY_DIR}/shaders")
+
+    file(MAKE_DIRECTORY ${SPIRV_DIR})
+    file(GLOB SHADERS "${SHADER_DIR}/*.vert" "${SHADER_DIR}/*.frag")
+
+    foreach(SHADER ${SHADERS})
+        get_filename_component(FILE_NAME ${SHADER} NAME)
+        set(SPIRV "${SPIRV_DIR}/${FILE_NAME}.spv")
+        add_custom_command(
+            OUTPUT ${SPIRV}
+            COMMAND ${GLSLANG_VALIDATOR} -V ${SHADER} -o ${SPIRV}
+            DEPENDS ${SHADER}
+        )
+        list(APPEND SPIRV_SHADERS ${SPIRV})
+    endforeach(SHADER ${SHADERS})
+
+    add_custom_target(compile_shaders ALL DEPENDS ${SPIRV_SHADERS})
+    add_dependencies(${CMAKE_PROJECT_NAME} compile_shaders)
+else()
+    message("Shader compiler not found. Make sure to install it and compile the shaders manually.")
+endif()

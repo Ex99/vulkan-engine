@@ -5,7 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Specify the project name
-project(GeckoEngine)
+project(GeckoEngine
+    VERSION 0.1.0
+    DESCRIPTION "A Vulkan rendering engine"
+    LANGUAGES CXX
+)
+
+# Include external libraries
+add_subdirectory(external)
 
 # Add source files
 set(SOURCES
@@ -42,10 +49,7 @@ set(HEADERS
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 
 # Link required libraries
-target_link_libraries(${CMAKE_PROJECT_NAME}
-    glfw
-    vulkan
-)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glfw vulkan tinyobjloader)
 
 # Find glslangValidator
 find_program(GLSLANG_VALIDATOR glslangValidator)
@@ -72,5 +76,5 @@ if(GLSLANG_VALIDATOR)
     add_custom_target(compile_shaders ALL DEPENDS ${SPIRV_SHADERS})
     add_dependencies(${CMAKE_PROJECT_NAME} compile_shaders)
 else()
-    message("Shader compiler not found. Make sure to install it and compile the shaders manually.")
+    message(WARNING "Shader compiler not found. Make sure to install it and compile the shaders manually.")
 endif()

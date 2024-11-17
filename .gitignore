@@ -59,3 +59,9 @@ _deps
 
 # Build directory
 build/
+
+# External dependencies
+external/
+
+# Wavefront OBJ
+*.obj

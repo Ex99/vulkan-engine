@@ -17,7 +17,7 @@ namespace GeckoEngine
         static constexpr int WIDTH = 1280;
         static constexpr int HEIGHT = 720;
 
-        Application();
+        Application(const std::string &modelPath);
         ~Application();
 
         Application(const Application &) = delete;
@@ -26,7 +26,7 @@ namespace GeckoEngine
         void run();
 
     private:
-        void loadObjects();
+        void loadObjects(const std::string &modelPath);
 
         Window window{WIDTH, HEIGHT, "Gecko Engine"};
         Device device{window};

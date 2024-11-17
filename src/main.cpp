@@ -6,7 +6,9 @@
 
 int main(int argc, const char *argv[])
 {
-    GeckoEngine::Application app{};
+    const std::string modelPath = argc > 1 ? argv[1] : "";
+
+    GeckoEngine::Application app{modelPath};
 
     try
     {

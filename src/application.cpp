@@ -11,9 +11,9 @@
 
 namespace GeckoEngine
 {
-    Application::Application()
+    Application::Application(const std::string &modelPath)
     {
-        loadObjects();
+        loadObjects(modelPath);
     }
 
     Application::~Application()
@@ -63,34 +63,34 @@ namespace GeckoEngine
         builder.vertices = {
             // Left face (white)
             {{-0.5f, -0.5f, -0.5f}, {0.9f, 0.9f, 0.9f}},
-            {{-0.5f,  0.5f,  0.5f}, {0.9f, 0.9f, 0.9f}},
-            {{-0.5f, -0.5f,  0.5f}, {0.9f, 0.9f, 0.9f}},
-            {{-0.5f,  0.5f, -0.5f}, {0.9f, 0.9f, 0.9f}},
+            {{-0.5f, 0.5f, 0.5f}, {0.9f, 0.9f, 0.9f}},
+            {{-0.5f, -0.5f, 0.5f}, {0.9f, 0.9f, 0.9f}},
+            {{-0.5f, 0.5f, -0.5f}, {0.9f, 0.9f, 0.9f}},
             // Right face (yellow)
-            {{ 0.5f, -0.5f, -0.5f}, {0.8f, 0.8f, 0.1f}},
-            {{ 0.5f,  0.5f,  0.5f}, {0.8f, 0.8f, 0.1f}},
-            {{ 0.5f, -0.5f,  0.5f}, {0.8f, 0.8f, 0.1f}},
-            {{ 0.5f,  0.5f, -0.5f}, {0.8f, 0.8f, 0.1f}},
+            {{0.5f, -0.5f, -0.5f}, {0.8f, 0.8f, 0.1f}},
+            {{0.5f, 0.5f, 0.5f}, {0.8f, 0.8f, 0.1f}},
+            {{0.5f, -0.5f, 0.5f}, {0.8f, 0.8f, 0.1f}},
+            {{0.5f, 0.5f, -0.5f}, {0.8f, 0.8f, 0.1f}},
             // Top face (orange)
             {{-0.5f, -0.5f, -0.5f}, {0.9f, 0.6f, 0.1f}},
-            {{ 0.5f, -0.5f,  0.5f}, {0.9f, 0.6f, 0.1f}},
-            {{-0.5f, -0.5f,  0.5f}, {0.9f, 0.6f, 0.1f}},
-            {{ 0.5f, -0.5f, -0.5f}, {0.9f, 0.6f, 0.1f}},
+            {{0.5f, -0.5f, 0.5f}, {0.9f, 0.6f, 0.1f}},
+            {{-0.5f, -0.5f, 0.5f}, {0.9f, 0.6f, 0.1f}},
+            {{0.5f, -0.5f, -0.5f}, {0.9f, 0.6f, 0.1f}},
             // Bottom face (red)
-            {{-0.5f,  0.5f, -0.5f}, {0.8f, 0.1f, 0.1f}},
-            {{ 0.5f,  0.5f,  0.5f}, {0.8f, 0.1f, 0.1f}},
-            {{-0.5f,  0.5f,  0.5f}, {0.8f, 0.1f, 0.1f}},
-            {{ 0.5f,  0.5f, -0.5f}, {0.8f, 0.1f, 0.1f}},
+            {{-0.5f, 0.5f, -0.5f}, {0.8f, 0.1f, 0.1f}},
+            {{0.5f, 0.5f, 0.5f}, {0.8f, 0.1f, 0.1f}},
+            {{-0.5f, 0.5f, 0.5f}, {0.8f, 0.1f, 0.1f}},
+            {{0.5f, 0.5f, -0.5f}, {0.8f, 0.1f, 0.1f}},
             // Nose face (blue)
-            {{-0.5f, -0.5f,  0.5f}, {0.1f, 0.1f, 0.8f}},
-            {{ 0.5f,  0.5f,  0.5f}, {0.1f, 0.1f, 0.8f}},
-            {{-0.5f,  0.5f,  0.5f}, {0.1f, 0.1f, 0.8f}},
-            {{ 0.5f, -0.5f,  0.5f}, {0.1f, 0.1f, 0.8f}},
+            {{-0.5f, -0.5f, 0.5f}, {0.1f, 0.1f, 0.8f}},
+            {{0.5f, 0.5f, 0.5f}, {0.1f, 0.1f, 0.8f}},
+            {{-0.5f, 0.5f, 0.5f}, {0.1f, 0.1f, 0.8f}},
+            {{0.5f, -0.5f, 0.5f}, {0.1f, 0.1f, 0.8f}},
             // Tail face (green)
             {{-0.5f, -0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
-            {{ 0.5f,  0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
-            {{-0.5f,  0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
-            {{ 0.5f, -0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
+            {{0.5f, 0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
+            {{-0.5f, 0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
+            {{0.5f, -0.5f, -0.5f}, {0.1f, 0.8f, 0.1f}},
         };
 
         for (auto &v : builder.vertices)
@@ -103,15 +103,24 @@ namespace GeckoEngine
         return std::make_unique<Model>(device, builder);
     }
 
-    void Application::loadObjects()
+    void Application::loadObjects(const std::string &modelPath)
     {
-        std::shared_ptr<Model> model = createCubeModel(device, {0.0f, 0.0f, 0.0f});
+        std::shared_ptr<Model> model;
 
-        auto cube = Object::createObject();
-        cube.model = model;
-        cube.transform.position = {0.0f, 0.0f, 1.5f};
-        cube.transform.scale = {0.5f, 0.5f, 0.5f};
+        if (!modelPath.empty())
+        {
+            model = Model::createModelFromFile(device, modelPath);
+        }
+        else
+        {
+            model = createCubeModel(device, {0.0f, 0.0f, 0.0f});
+        }
 
-        objects.push_back(std::move(cube));
+        auto obj = Object::createObject();
+        obj.model = model;
+        obj.transform.position = {0.0f, 0.0f, 1.5f};
+        obj.transform.scale = {0.5f, 0.5f, 0.5f};
+
+        objects.push_back(std::move(obj));
     }
 } // namespace GeckoEngine

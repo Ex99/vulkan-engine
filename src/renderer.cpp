@@ -1,7 +1,9 @@
 #include "renderer.h"
 
-#include <stdexcept>
 #include <glm/glm.hpp>
+
+#include <array>
+#include <stdexcept>
 
 namespace GeckoEngine
 {

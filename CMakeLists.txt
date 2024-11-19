@@ -54,7 +54,8 @@ add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 
 # Link required libraries
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-    vulkan
+    Vulkan::Loader
+    vulkan-validationlayers::vulkan-validationlayers
     glfw
     glm::glm
     tinyobjloader::tinyobjloader)

@@ -1,14 +1,33 @@
 #include "model.h"
+#include "utils.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
 
 #include <cassert>
 #include <cstring>
 #include <iostream>
+#include <unordered_map>
+
+namespace std
+{
+    template <>
+    struct hash<GeckoEngine::Model::Vertex>
+    {
+        size_t operator()(GeckoEngine::Model::Vertex const &vertex) const
+        {
+            size_t seed = 0;
+            GeckoEngine::hashCombine(seed, vertex.position, vertex.color, vertex.normal, vertex.uv);
+            return seed;
+        }
+    };
+}
 
 namespace GeckoEngine
 {
+
     Model::Model(Device &device, const Model::Builder &builder) : device{device}
     {
         createVertexBuffers(builder.vertices);
@@ -31,10 +50,6 @@ namespace GeckoEngine
     {
         Builder builder{};
         builder.loadModel(path);
-
-        std::cout << "Model loaded from file: " << path << std::endl;
-        std::cout << "Vertex count: " << builder.vertices.size() << std::endl;
-
         return std::make_unique<Model>(device, builder);
     }
 
@@ -175,6 +190,8 @@ namespace GeckoEngine
         vertices.clear();
         indices.clear();
 
+        std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+
         for (const auto &shape : shapes)
         {
             for (const auto &index : shape.mesh.indices)
@@ -221,7 +238,13 @@ namespace GeckoEngine
                     };
                 }
 
-                vertices.push_back(vertex);
+                if (uniqueVertices.count(vertex) == 0)
+                {
+                    uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+                    vertices.push_back(vertex);
+                }
+
+                indices.push_back(uniqueVertices[vertex]);
             }
         }
     }

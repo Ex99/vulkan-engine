@@ -11,8 +11,12 @@ project(GeckoEngine
     LANGUAGES CXX
 )
 
-# Include external libraries
-add_subdirectory(external)
+# Find required packages
+find_package(VulkanLoader            REQUIRED)
+find_package(vulkan-validationlayers REQUIRED)
+find_package(glfw3                   REQUIRED)
+find_package(glm                     REQUIRED)
+find_package(tinyobjloader           REQUIRED)
 
 # Add source files
 set(SOURCES
@@ -49,7 +53,11 @@ set(HEADERS
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
 
 # Link required libraries
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glfw vulkan tinyobjloader)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+    vulkan
+    glfw
+    glm::glm
+    tinyobjloader::tinyobjloader)
 
 # Find glslangValidator
 find_program(GLSLANG_VALIDATOR glslangValidator)

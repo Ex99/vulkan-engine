@@ -1,6 +1,7 @@
 #ifndef _MODEL_H
 #define _MODEL_H
 
+#include "buffer.h"
 #include "device.h"
 
 #define GLM_FORCE_RADIANS
@@ -58,13 +59,12 @@ namespace GeckoEngine
 
         Device &device;
 
-        VkBuffer vertexBuffer;
+        std::unique_ptr<Buffer> vertexBuffer;
         VkDeviceMemory vertexBufferMemory;
         uint32_t vertexCount;
 
         bool hasIndexBuffer = false;
-        VkBuffer indexBuffer;
-        VkDeviceMemory indexBufferMemory;
+        std::unique_ptr<Buffer> indexBuffer;
         uint32_t indexCount;
     };
 } // namespace GeckoEngine

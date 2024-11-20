@@ -22,6 +22,7 @@ find_package(tinyobjloader           REQUIRED)
 set(SOURCES
     src/main.cpp
     src/application.cpp
+    src/buffer.cpp
     src/camera.cpp
     src/device.cpp
     src/graphics_pipeline.cpp
@@ -37,8 +38,10 @@ set(SOURCES
 # Add header files (optional, for IDE support)
 set(HEADERS
     src/application.h
+    src/buffer.h
     src/camera.h
     src/device.h
+    src/frame_info.h
     src/graphics_pipeline.h
     src/input.h
     src/model.h

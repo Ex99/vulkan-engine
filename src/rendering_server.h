@@ -3,6 +3,7 @@
 
 #include "camera.h"
 #include "device.h"
+#include "frame_info.h"
 #include "graphics_pipeline.h"
 #include "object.h"
 
@@ -19,7 +20,7 @@ namespace GeckoEngine
         RenderingServer(const RenderingServer &) = delete;
         RenderingServer &operator=(const RenderingServer &) = delete;
 
-        void renderObjects(VkCommandBuffer commandBuffer, std::vector<Object> &objects, const Camera3D &camera);
+        void renderObjects(FrameInfo &frameInfo, std::vector<Object> &objects);
 
     private:
         void createPipelineLayout();

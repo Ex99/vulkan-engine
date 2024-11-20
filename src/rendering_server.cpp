@@ -26,11 +26,11 @@ namespace GeckoEngine
         vkDestroyPipelineLayout(device.device(), pipelineLayout, nullptr);
     }
 
-    void RenderingServer::renderObjects(VkCommandBuffer commandBuffer, std::vector<Object> &objects, const Camera3D &camera)
+    void RenderingServer::renderObjects(FrameInfo &frameInfo, std::vector<Object> &objects)
     {
-        graphicsPipeline->bind(commandBuffer);
+        graphicsPipeline->bind(frameInfo.commandBuffer);
 
-        auto projectionView = camera.getProjection() * camera.getView();
+        auto projectionView = frameInfo.camera.getProjection() * frameInfo.camera.getView();
 
         for (auto &obj : objects)
         {
@@ -39,15 +39,15 @@ namespace GeckoEngine
             push.normalMatrix = obj.transform.normalMatrix();
 
             vkCmdPushConstants(
-                commandBuffer,
+                frameInfo.commandBuffer,
                 pipelineLayout,
                 VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
                 0,
                 sizeof(SimplePushConstantData),
                 &push);
 
-            obj.model->bind(commandBuffer);
-            obj.model->draw(commandBuffer);
+            obj.model->bind(frameInfo.commandBuffer);
+            obj.model->draw(frameInfo.commandBuffer);
         }
     }
 

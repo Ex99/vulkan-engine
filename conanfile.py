@@ -1,4 +1,5 @@
 from conan import ConanFile
+from conan.tools.cmake import cmake_layout
 
 
 class GeckoEngine(ConanFile):
@@ -16,5 +17,5 @@ class GeckoEngine(ConanFile):
         self.build_requires("glslang/11.7.0")
         self.build_requires("cmake/3.22.6")
 
-    # def layout(self):
-    #     cmake_layout(self)
+    def layout(self):
+        cmake_layout(self)

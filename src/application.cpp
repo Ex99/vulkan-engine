@@ -1,5 +1,6 @@
 #include "application.h"
 
+#include "buffer.h"
 #include "camera.h"
 #include "input.h"
 #include "rendering_server.h"
@@ -11,6 +12,12 @@
 
 namespace GeckoEngine
 {
+    struct GlobalUbo
+    {
+        glm::mat4 projectionView{1.0f};
+        glm::vec3 lightDirection = glm::normalize(glm::vec3{1.0f, -3.0f, -1.0f});
+    };
+
     Application::Application(const std::string &modelPath)
     {
         loadObjects(modelPath);
@@ -22,6 +29,19 @@ namespace GeckoEngine
 
     void Application::run()
     {
+        std::vector<std::unique_ptr<Buffer>> uboBuffers(SwapChain::MAX_FRAMES_IN_FLIGHT);
+
+        for (int i = 0; i < uboBuffers.size(); i++)
+        {
+            uboBuffers[i] = std::make_unique<Buffer>(
+                device,
+                sizeof(GlobalUbo),
+                1,
+                VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+            uboBuffers[i]->map();
+        }
+
         RenderingServer renderingServer{device, renderer.getSwapChainRenderPass()};
 
         Camera3D camera{};
@@ -47,8 +67,19 @@ namespace GeckoEngine
 
             if (auto commandBuffer = renderer.beginFrame())
             {
+                int frameIndex = renderer.getFrameIndex();
+
+                FrameInfo frameInfo{frameIndex, frameTime, commandBuffer, camera};
+
+                // Update
+                GlobalUbo ubo{};
+                ubo.projectionView = camera.getProjection() * camera.getView();
+                uboBuffers[frameIndex]->writeToBuffer(&ubo);
+                uboBuffers[frameIndex]->flush();
+
+                // Render
                 renderer.beginSwapChainRenderPass(commandBuffer);
-                renderingServer.renderObjects(commandBuffer, objects, camera);
+                renderingServer.renderObjects(frameInfo, objects);
                 renderer.endSwapChainRenderPass(commandBuffer);
                 renderer.endFrame();
             }

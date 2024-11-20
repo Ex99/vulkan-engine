@@ -12,7 +12,7 @@ namespace GeckoEngine
     struct SimplePushConstantData
     {
         glm::mat4 transform{1.0f};
-        alignas(16) glm::vec3 color{};
+        glm::mat4 normalMatrix{1.0f};
     };
 
     RenderingServer::RenderingServer(Device &device, VkRenderPass renderPass) : device{device}
@@ -35,8 +35,8 @@ namespace GeckoEngine
         for (auto &obj : objects)
         {
             SimplePushConstantData push{};
-            push.color = obj.color;
             push.transform = projectionView * obj.transform.mat4();
+            push.normalMatrix = obj.transform.normalMatrix();
 
             vkCmdPushConstants(
                 commandBuffer,
